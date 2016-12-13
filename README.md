@@ -1,5 +1,7 @@
 #awsvm
-Switch between AWS Credentials, similar to chefvm
+Switch between AWS Credentials, similar to chefvm.
+
+If you have multiple AWS accounts, you can use this to 
 
 #Installation
 TODO
