@@ -66,7 +66,7 @@ def main(argv):
     config = Config()
 
     try:
-        opts, args = getopt.getopt(argv,"l?")
+        opts, args = getopt.getopt(argv, "l?")
     except getopt.GetoptError:
         user_options()
 

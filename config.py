@@ -1,6 +1,7 @@
 import ConfigParser
 from os.path import expanduser
 
+
 class Config(object):
 
     def __init__(self, creds_file='~/.aws/credentials'):
