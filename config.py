@@ -22,14 +22,23 @@ class Config(object):
         self.config.set('default', 'aws_access_key_id', aws_id)
         self.config.set('default', 'aws_access_key_id', aws_id)
 
+        print "Using AWS config " + selection
+
         with open(self.creds_file, 'w') as configfile:
             self.config.write(configfile)
 
 
     def list_accounts(self):
         print "You have the following AWS accounts: "
+
+        aws_id = self.config.get('default', 'aws_access_key_id')
+
         for section in self.config.sections():
-            print "\t{0:20}{1}".format(section, self.config.get(section, 'aws_access_key_id'))
+            if section != 'default' \
+                    and self.config.get(section, 'aws_access_key_id') == aws_id:
+                print "\t{0}{1:19}{2}".format('*', section, self.config.get(section, 'aws_access_key_id'))
+            else:
+                print "\t{0:20}{1}".format(section, self.config.get(section, 'aws_access_key_id'))
         print
 
 

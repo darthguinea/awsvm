@@ -12,13 +12,6 @@ def user_options():
     exit(1)
 
 
-def list_accounts():
-    print "You have the following AWS accounts configured:\n"
-    for section in config.sections():
-        print "\t{0:20}{1}".format(section, config.get(section, 'aws_access_key_id'))
-    exit()
-
-
 def default_exists(selection):
     aws_default_id = config.get('default', 'aws_access_key_id')
 
@@ -28,28 +21,6 @@ def default_exists(selection):
                 and config.get(section, 'aws_access_key_id') == aws_default_id:
             return True
     return False
-
-
-def save_default():
-    print "'default' does not have a backup name" 
-    var = raw_input("Please enter a name to save 'default' to: ")
-
-    print "1"
-
-    default_id = config.get('default', 'aws_access_key_id')
-    default_key = config.get('default', 'aws_secret_access_key')
-
-    print "2"
-
-    config.set(var, 'aws_access_key_id', default_id)
-    config.set(var, 'aws_secret_access_key', default_key)
-
-    print "3"
-
-    print "path" + expanduser(creds_file)
-
-    with open(expanduser(creds_file), 'w') as configfile:
-        config.write(configfile)
 
 
 def set_selection(config, selection):
