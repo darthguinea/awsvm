@@ -6,9 +6,10 @@ from os.path import expanduser
 
 
 def user_options():
-    print "awsvm:\t\t- Switch aws credentials"
+    print "awsvm - A tool to switch aws credentials"
     print "  -?\t\tDisplay Help"
     print "  -l\t\tList accounts"
+    print "  -a\t\tAdd account"
     exit(1)
 
 
@@ -37,7 +38,7 @@ def main(argv):
     config = Config()
 
     try:
-        opts, args = getopt.getopt(argv, "l?")
+        opts, args = getopt.getopt(argv, "l?a")
     except getopt.GetoptError:
         user_options()
 
@@ -46,6 +47,8 @@ def main(argv):
             user_options()
         elif opt == '-l':
             config.list_accounts()
+        elif opt == '-a':
+            config.add_account()
 
     try:
         set_selection(config, argv[0])
