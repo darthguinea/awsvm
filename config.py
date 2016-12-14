@@ -10,6 +10,15 @@ class Config(object):
         self.config.readfp(open(expanduser(creds_file)))
 
 
+    def get_user_input(self, message):
+        var = raw_input(message + " (type q to quit): ")
+
+        if var.strip() == "q":
+            exit(0)
+        
+        return var.strip()
+
+
     def set_selection(self, selection):
         if not self.default_backup_exists():
             self.backup_default()
@@ -50,14 +59,41 @@ class Config(object):
                 return True
         return False
 
+    
+    def add_account(self):
+        name = self.get_user_input("Enter profile name")
+        for profile in self.config.sections():
+            if profile == name:
+                print "Profile name '" + profile + "' already exists"
+                exit(1)
+        aws_id = self.get_user_input("Enter your aws_access_key_id")
+        aws_key = self.get_user_input("Enter your aws_secret_access_key")
+    
+        if aws_id == "" or aws_key == "":
+            print "AWS Key or ID cannot be blank, account not added!"
+            exit(1)
+
+        if len(aws_id) != 21 and len(aws_key) != 41:
+            print "Keys do not appear valid, exiting"
+            exit(1)
+
+        self.config.add_section(name)
+        self.config.set(name, 'aws_access_key_id', aws_id)
+        self.config.set(name, 'aws_secret_access_key', aws_key)
+
+        with open(self.creds_file, 'w') as configfile:
+            self.config.write(configfile)       
+
+        exit(0)
+
 
     def backup_default(self):
         print "A backup of 'default' does not exist"
-        section = raw_input("Please enter a backup name for 'default': ")
+        section = self.get_user_input("Please enter a backup name for 'default': ")
 
-        if section.strip() is "":
+        if section is "":
             print "Not backing up, exiting "
-            exit()
+            exit(0)
 
         default_id  = self.config.get('default', 'aws_access_key_id')
         default_key = self.config.get('default', 'aws_secret_access_key')
