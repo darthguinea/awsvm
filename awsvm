@@ -1,3 +1,5 @@
 #!/bin/bash
 
-python awsvm.py $@
+SCRIPT=$(dirname $0)
+
+python ${SCRIPT}/awsvm.py $@
