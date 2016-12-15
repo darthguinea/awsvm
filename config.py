@@ -18,6 +18,25 @@ class Config(object):
         
         return var.strip()
 
+    
+    def delete_account(self):
+        name = self.get_user_input('Enter profile to delete')
+    
+        if name == 'default':
+            print "You cannot delete the default profile, exiting"
+            exit(1)
+
+        for selection in self.config.sections():
+            if name == selection:
+                self.config.remove_option(name, 'aws_access_key_id')
+                self.config.remove_option(name, 'aws_secret_access_key')
+                self.config.remove_section(name)
+
+        with open(self.creds_file, 'w') as configfile:
+            self.config.write(configfile)
+
+        exit(0)
+
 
     def set_selection(self, selection):
         if not self.default_backup_exists():
@@ -43,11 +62,14 @@ class Config(object):
         aws_id = self.config.get('default', 'aws_access_key_id')
 
         for section in self.config.sections():
-            if section != 'default' \
-                    and self.config.get(section, 'aws_access_key_id') == aws_id:
-                print "\t{0}{1:19}{2}".format('*', section, self.config.get(section, 'aws_access_key_id'))
-            else:
-                print "\t{0:20}{1}".format(section, self.config.get(section, 'aws_access_key_id'))
+            try:
+                if section != 'default' \
+                        and self.config.get(section, 'aws_access_key_id') == aws_id:
+                    print "\t{0}{1:19}{2}".format('*', section, self.config.get(section, 'aws_access_key_id'))
+                else:
+                    print "\t{0:20}{1}".format(section, self.config.get(section, 'aws_access_key_id'))
+            except:
+                pass
         print
 
 
