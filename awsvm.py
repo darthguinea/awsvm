@@ -10,6 +10,7 @@ def user_options():
     print "  -?\t\tDisplay Help"
     print "  -l\t\tList accounts"
     print "  -a\t\tAdd account"
+    print "  -d\t\tDelete account"
     exit(1)
 
 
@@ -38,7 +39,7 @@ def main(argv):
     config = Config()
 
     try:
-        opts, args = getopt.getopt(argv, "l?a")
+        opts, args = getopt.getopt(argv, "?adl")
     except getopt.GetoptError:
         user_options()
 
@@ -49,6 +50,8 @@ def main(argv):
             config.list_accounts()
         elif opt == '-a':
             config.add_account()
+        elif opt == '-d':
+            config.delete_account()
 
     try:
         set_selection(config, argv[0])
