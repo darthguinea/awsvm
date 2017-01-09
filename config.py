@@ -48,7 +48,7 @@ class Config(object):
                 aws_key = self.config.get(selection, 'aws_secret_access_key')
 
         self.config.set('default', 'aws_access_key_id', aws_id)
-        self.config.set('default', 'aws_access_key_id', aws_id)
+        self.config.set('default', 'aws_secret_access_key', aws_key)
 
         print "Using AWS config " + selection
 
