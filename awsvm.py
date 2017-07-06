@@ -14,49 +14,37 @@ def user_options():
     exit(1)
 
 
-def default_exists(selection):
-    aws_default_id = config.get('default', 'aws_access_key_id')
-
-    for section in config.sections():
-        # If the default key does not exist, then we do not want to overwrite it
-        if section != 'default' \
-                and config.get(section, 'aws_access_key_id') == aws_default_id:
-            return True
-    return False
-
-
 def set_selection(config, selection):
     config.set_selection(selection)
 
 
-def backup_config(config):
-    config.list_accounts()
-    if not config.default_backup_exists():
-        config.backup_default()
-
-
 def main(argv):
+    lAccounts = True
     config = Config()
 
     try:
-        opts, args = getopt.getopt(argv, "?adl")
+        opts, args = getopt.getopt(argv, "?adl", ["list", "add"])
     except getopt.GetoptError:
         user_options()
 
     for opt, arg in opts:
         if opt == '-?':
             user_options()
-        elif opt == '-l':
+        elif opt in ('-l', '--list'):
             config.list_accounts()
-        elif opt == '-a':
+            lAccounts = False
+        elif opt in ('-a', '--add'):
             config.add_account()
+            lAccounts = False
         elif opt == '-d':
             config.delete_account()
+            lAccounts = False
 
     try:
         set_selection(config, argv[0])
     except:
-        config.list_accounts()
+        if lAccounts:
+            config.list_accounts()
 
 if __name__ == '__main__':
     main(sys.argv[1:])
