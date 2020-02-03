@@ -1,5 +1,0 @@
-#!/bin/bash
-
-SCRIPT=$(dirname $0)
-
-python ${SCRIPT}/awsvm.py $@
