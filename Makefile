@@ -1,6 +1,6 @@
 export APP=$(shell basename $(CURDIR))
 export CONFIG=./config.json
-export INSTALL_PATH=${HOME}/Programming/Scripts
+export INSTALL_PATH=/usr/local/bin
 
 all:
 	go get -d
